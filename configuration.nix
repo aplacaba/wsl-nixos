@@ -8,11 +8,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    # include NixOS-WSL modules
-    <nixos-wsl/modules>
-  ];
-
   wsl.enable = true;
   wsl.defaultUser = "xtovarisch";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -24,10 +19,21 @@
     btop
     ripgrep
     zsh
+    libvterm
+    sbcl
+    emacs
+    mise
+    starship
+    gnumake
+    cmake
+    libtool
+    gcc
   ];
 
   programs.zsh.enable = true;
   users.users."xtovarisch".shell = pkgs.zsh;
+
+  programs.ssh.startAgent = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
