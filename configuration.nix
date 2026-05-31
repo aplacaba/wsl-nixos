@@ -37,34 +37,30 @@
     libjpeg8
     nodejs
     gnupg
-    emacs-pgtk
-    wl-clipboard
-    adwaita-icon-theme
-    gnome-themes-extra
+    xauth
   ];
 
-  programs.dconf.enable = true;
-  programs.dconf.profiles.user.databases = [
-    {
-      settings = {
-        "org/gnome/desktop/interface" = {
-          color-scheme = "prefer-dark"; # or "default" for light
-          gtk-theme = "Adwaita";
-        };
-      };
-    }
-  ];
+  # WSLg (Wayland/X11) is disabled, so no GUI packages or settings needed
 
   programs.zsh.enable = true;
   users.users."xtovarisch".shell = pkgs.zsh;
-  services.dbus.enable = true;
   fonts.fontconfig.enable = true;
 
   programs.ssh.startAgent = true;
-  environment.variables = {
-    GTK_THEME = "Adwaita:dark";
-    GDK_BACKEND = "wayland";
-    G_MESSAGES_DEBUG = "all";
+
+  # WSLg X11 socket mount is automatically handled by NixOS-WSL;
+  # if WSLg is disabled the mount will simply fail at boot (harmless).
+  # DO NOT clear systemd.mounts here — it breaks sudo (suid-sgid-wrappers tmpfs mount).
+
+  # Enable systemd user manager (user@.service) for the user
+  # WSL terminals don't go through PAM login, so no session is created.
+  # Lingering ensures the user manager starts at boot.
+  systemd.tmpfiles.settings."50-linger" = {
+    "/var/lib/systemd/linger/xtovarisch".f = {
+      mode = "0644";
+      user = "root";
+      group = "root";
+    };
   };
 
   # This value determines the NixOS release from which the default
