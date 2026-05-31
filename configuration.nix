@@ -25,7 +25,7 @@
     zsh
     libvterm
     sbcl
-    emacs-nox
+    emacs
     mise
     starship
     gnumake
