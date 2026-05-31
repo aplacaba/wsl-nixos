@@ -25,7 +25,7 @@
     zsh
     libvterm
     sbcl
-    emacs
+    emacs-pgtk
     mise
     starship
     gnumake
