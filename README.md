@@ -10,13 +10,23 @@ sudo nixos-rebuild switch
 
 ## Running Emacs from a Windows shortcut
 
-Create a shortcut on Windows with the following **Target**:
+The script `~/bin/emacs-gui` launches Emacs in the background and exits
+immediately (no lingering terminal):
+
+```bash
+#!/usr/bin/env bash
+nohup emacs >/dev/null 2>&1 &
+disown
+```
+
+Create a Windows shortcut with this **Target**:
 
 ```
-C:\Windows\System32\wsl.exe ~ -e bash -lc "nohup emacs >/dev/null 2>&1 & disown"
+C:\Windows\System32\wsl.exe ~ -e /home/xtovarisch/bin/emacs-gui
 ```
 
-This launches Emacs in the background and closes the terminal window immediately.
+This way all the logic lives inside WSL and you can tweak it without
+touching the Windows shortcut.
 
 ## Prerequisites
 
