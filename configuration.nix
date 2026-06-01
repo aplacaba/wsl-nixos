@@ -43,11 +43,12 @@
     terraform
     azure-cli
     awscli2
+    (pkgs.writeShellScriptBin "emacs-gui" (builtins.readFile ./bin/emacs-gui))
   ];
 
   # WSLg is disabled (guiApplications=false in .wslconfig).
   # GUI apps use VcXsrv on the Windows host instead.
-  # DISPLAY is set dynamically in ~/bin/emacs-gui.
+  # DISPLAY is set dynamically by the emacs-gui script.
 
   programs.zsh.enable = true;
   users.users."xtovarisch".shell = pkgs.zsh;

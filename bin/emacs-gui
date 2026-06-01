@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Launch Emacs GUI via VcXsrv on Windows
+#
+# Auto-detects the Windows host IP from the WSL2 gateway
+# and sets DISPLAY accordingly.  Runs Emacs in the background
+# so the terminal window closes immediately.
+
+WIN_IP=$(ip route show default | awk '{print $3}')
+export DISPLAY=$WIN_IP:0
+nohup emacs >/dev/null 2>&1 &
+disown
