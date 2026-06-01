@@ -46,6 +46,12 @@
     (pkgs.writeShellScriptBin "emacs-gui" (builtins.readFile ./bin/emacs-gui))
   ];
 
+  # Point GLib/GIO to GSettings schemas so emacs doesn't print
+  # "GLib-GIO-CRITICAL: g_settings_schema_source_lookup" at startup.
+  environment.variables = {
+    GSETTINGS_SCHEMA_DIR = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}/glib-2.0/schemas";
+  };
+
   # WSLg is disabled (guiApplications=false in .wslconfig).
   # GUI apps use VcXsrv on the Windows host instead.
   # DISPLAY is set dynamically by the emacs-gui script.
