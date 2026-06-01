@@ -14,7 +14,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   fonts.packages = with pkgs; [
-    dejavu_fonts
+    nerd-fonts.dejavu-sans-mono
   ];
 
   environment.systemPackages = with pkgs; [
