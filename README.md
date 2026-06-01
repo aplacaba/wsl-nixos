@@ -19,9 +19,9 @@ emacs-gui.bat → emacs-gui.vbs → wsl → emacs-gui → systemd-run → emacs
 
 ### Windows side
 
-Copy **`emacs-gui.bat`** and **`emacs-gui.vbs`** from this repo to your
-Windows user folder (e.g. `C:\Users\A\`).  Then double-click
-`emacs-gui.bat` to launch Emacs:
+Copy **`windows/emacs-gui.bat`** and **`windows/emacs-gui.vbs`** from
+this repo to your Windows user folder (e.g. `C:\Users\A\`).  Then
+double-click `emacs-gui.bat` to launch Emacs:
 
 **`emacs-gui.bat`**
 ```bat
