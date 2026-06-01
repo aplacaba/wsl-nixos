@@ -45,7 +45,9 @@
     awscli2
   ];
 
-  # WSLg (Wayland/X11) is disabled, so no GUI packages or settings needed
+  # WSLg is disabled (guiApplications=false in .wslconfig).
+  # GUI apps use VcXsrv on the Windows host instead.
+  # DISPLAY is set dynamically in ~/bin/emacs-gui.
 
   programs.zsh.enable = true;
   users.users."xtovarisch".shell = pkgs.zsh;

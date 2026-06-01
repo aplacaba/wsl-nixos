@@ -15,6 +15,9 @@ immediately (no lingering terminal):
 
 ```bash
 #!/usr/bin/env bash
+# Get the Windows host IP (works with VcXsrv or any X server on Windows)
+WIN_IP=$(ip route show default | awk '{print $3}')
+export DISPLAY=$WIN_IP:0
 nohup emacs >/dev/null 2>&1 &
 disown
 ```
@@ -40,4 +43,8 @@ touching the Windows shortcut.
 ## Prerequisites
 
 - [NixOS-WSL](https://github.com/nix-community/NixOS-WSL) installed
-- WSLg enabled (provides the X11 display server for GUI apps)
+- A Windows X server (e.g. [VcXsrv](https://vcxsrv.com/)) running on the
+  Windows host — the script auto-detects the Windows host IP from the
+  WSL2 gateway and sets `DISPLAY` accordingly.
+- Windows `.wslconfig` (`%USERPROFILE%\.wslconfig`) should have
+  `guiApplications=false` when using a third-party X server.
