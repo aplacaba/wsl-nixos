@@ -19,13 +19,17 @@ emacs-gui.bat → emacs-gui.vbs → wsl → emacs-gui → systemd-run → emacs
 
 ### Windows side
 
-**`C:\Users\A\emacs-gui.bat`** — double-click this to launch Emacs:
+Copy **`emacs-gui.bat`** and **`emacs-gui.vbs`** from this repo to your
+Windows user folder (e.g. `C:\Users\A\`).  Then double-click
+`emacs-gui.bat` to launch Emacs:
+
+**`emacs-gui.bat`**
 ```bat
 @echo off
 wscript.exe "%~dp0emacs-gui.vbs"
 ```
 
-**`C:\Users\A\emacs-gui.vbs`** — starts VcXsrv if needed, then runs WSL
+**`emacs-gui.vbs`** — starts VcXsrv if needed, then runs WSL
 without waiting (so emacs survives):
 ```vb
 shell.Run "wsl ~/bin/emacs-gui", 0, False
