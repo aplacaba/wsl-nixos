@@ -28,6 +28,15 @@ C:\Windows\System32\wsl.exe ~ -e /home/xtovarisch/bin/emacs-gui
 This way all the logic lives inside WSL and you can tweak it without
 touching the Windows shortcut.
 
+## Included Tooling
+
+| Tool | Package |
+|------|---------|
+| Terraform | `terraform` |
+| Azure CLI | `azure-cli` |
+| AWS CLI | `awscli2` |
+| Emacs (GUI) | `emacs` |
+
 ## Prerequisites
 
 - [NixOS-WSL](https://github.com/nix-community/NixOS-WSL) installed

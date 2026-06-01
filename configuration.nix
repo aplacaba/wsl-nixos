@@ -39,6 +39,9 @@
     nodejs
     gnupg
     xauth
+    terraform
+    azure-cli
+    awscli2
   ];
 
   # WSLg (Wayland/X11) is disabled, so no GUI packages or settings needed
