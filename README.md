@@ -10,29 +10,40 @@ sudo nixos-rebuild switch
 
 ## Running Emacs from a Windows shortcut
 
-The `emacs-gui` script (from `bin/emacs-gui` in this repo, installed
-system-wide via Nix) launches Emacs in the background and exits
-immediately (no lingering terminal):
+Emacs is launched via a chain that ensures it survives the WSL client
+exiting:
+
+```
+emacs-gui.bat → emacs-gui.vbs → wsl → emacs-gui → systemd-run → emacs
+```
+
+### Windows side
+
+**`C:\Users\A\emacs-gui.bat`** — double-click this to launch Emacs:
+```bat
+@echo off
+wscript.exe "%~dp0emacs-gui.vbs"
+```
+
+**`C:\Users\A\emacs-gui.vbs`** — starts VcXsrv if needed, then runs WSL
+without waiting (so emacs survives):
+```vb
+shell.Run "wsl ~/bin/emacs-gui", 0, False
+```
+
+### WSL side
+
+**`~/bin/emacs-gui`** (tracked in `bin/emacs-gui`) — auto-detects the
+Windows host IP, sets `DISPLAY`, and launches emacs via `systemd-run`
+so it's a systemd service detached from the WSL client:
 
 ```bash
 #!/usr/bin/env bash
-# Auto-detect the Windows host IP from the WSL2 gateway
-WIN_IP=$(ip route show default | awk '{print $3}')
-export DISPLAY=$WIN_IP:0
-nohup emacs >/dev/null 2>&1 &
-disown
+WIN_IP=$(/run/current-system/sw/bin/ip route show default | /run/current-system/sw/bin/awk '{print $3}')
+/run/current-system/sw/bin/systemd-run --user --no-block -q \
+    -E "DISPLAY=$WIN_IP:0" \
+    /run/current-system/sw/bin/emacs
 ```
-
-Create a Windows shortcut with this **Target**:
-
-```
-C:\Windows\System32\wsl.exe ~ -e bash -lc emacs-gui
-```
-
-(`bash -lc` is needed so that the PATH picks up the Nix-installed script.)
-
-All the launch logic lives in the repo under `bin/emacs-gui` — tweak it
-there, rebuild, and the shortcut keeps working unchanged.
 
 ## Included Tooling
 
@@ -52,3 +63,5 @@ there, rebuild, and the shortcut keeps working unchanged.
   WSL2 gateway and sets `DISPLAY` accordingly.
 - Windows `.wslconfig` (`%USERPROFILE%\.wslconfig`) should have
   `guiApplications=false` when using a third-party X server.
+- Systemd user manager enabled (lingering is configured in
+  `configuration.nix`).
