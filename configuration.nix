@@ -28,6 +28,7 @@
     sbcl
     emacs
     gsettings-desktop-schemas
+    kubectl
     mise
     starship
     gnumake
