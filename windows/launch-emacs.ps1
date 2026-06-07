@@ -2,7 +2,7 @@
 
 if (-not (Get-Process vcxsrv -ErrorAction SilentlyContinue)) {
     Write-Host "VcXsrv is not running. Starting XLaunch..." -ForegroundColor Yellow
-    Start-Process "C:\Program Files\VcXsrv\xlaunch.exe" -ArgumentList ":0", "-multiwindow", "-clipboard", "-wgl", "-ac"
+    Start-Process "C:\Program Files\VcXsrv\vcxsrv.exe" -ArgumentList ":0 -multiwindow -clipboard -wgl -ac"
 } else {
     Write-Host "VcXsrv is already running." -ForegroundColor Green
 }
