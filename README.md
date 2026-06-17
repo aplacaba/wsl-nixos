@@ -1,14 +1,65 @@
 # wsl-nixos
 
-NixOS-WSL configuration for my development environment.
+NixOS-WSL configuration for my development environment — Emacs GUI via
+VcXsrv, tmux with Emacs-friendly keybindings, Zsh, and dev tooling.
 
-## Building
+> **For AI agents** → see [`AGENTS.md`](AGENTS.md) for architecture,
+> decisions, and conventions.
+>
+> **For detailed handoff notes** → see `HANDOFF.md` (local-only, not in repo).
+
+---
+
+## Quick Start
 
 ```bash
 sudo nixos-rebuild switch
 ```
 
-## Running Emacs from a Windows shortcut
+---
+
+## What's Included
+
+| Category | What |
+|----------|------|
+| **Editor** | Emacs (X11 GUI via VcXsrv), launched from Windows shortcut |
+| **Terminal** | Zsh + starship prompt, tmux (C-b prefix, emacs keybindings) |
+| **Dev tools** | git, ripgrep, gnumake, cmake, gcc, nodejs, btop |
+| **Cloud/Infra** | kubectl, terraform, azure-cli, awscli2 |
+| **Languages** | sbcl (Common Lisp), nodejs |
+| **Other** | ssh-agent, nix-ld (dynamic binary compat), Nerd Fonts |
+
+## Tmux Quick Reference
+
+Tmux is configured with Emacs-friendly bindings:
+
+| Binding | Action |
+|---------|--------|
+| **`C-b`** | Prefix key |
+| **`C-b` `c`** | New window (current dir) |
+| **`C-b` `C-c`** | New window (current dir) |
+| **`C-b` `%`** | Split vertical |
+| **`C-b` `"`** | Split horizontal |
+| **`C-b` `\|`** | Split vertical |
+| **`C-b` `-`** | Split horizontal |
+| **`C-b` `,`** | Rename window |
+| **`C-b` `C-k`** | Kill pane |
+| **`C-b` `d`** | Detach |
+| **`C-b` `s`** | Session picker |
+| **`C-b` `[`** | Enter copy mode |
+| **`C-b` `]`** | Paste |
+| **`C-b` `n`** / **`C-b` `p`** | Next / previous window |
+| **`M-arrows`** | Navigate panes |
+| **`M-S-arrows`** | Resize panes (5 units) |
+| **`C-space`** | Begin selection (copy mode) |
+| **`C-w`** | Copy selection and exit (copy mode) |
+
+Copy mode uses Emacs-style motion (`C-p`, `C-n`, `C-f`, `C-b`, `C-a`,
+`C-e`, `M-f`, `M-b`, `M-v`, `C-v`).
+
+> **Note:** `C-b C-b` sends a literal `C-b` to the terminal (passthrough).
+
+## Running Emacs from a Windows Shortcut
 
 Emacs is launched via a PowerShell script that starts VcXsrv if needed,
 then runs Emacs in WSL with the correct `DISPLAY`:
@@ -17,62 +68,25 @@ then runs Emacs in WSL with the correct `DISPLAY`:
 emacs.bat → launch-emacs.ps1 → wsl → emacs
 ```
 
-### Windows side
+### Setup
 
-Copy **`windows/emacs.bat`** and **`windows/launch-emacs.ps1`** from
-this repo to your Windows user folder (e.g. `C:\Users\A\`).  Then
-double-click `emacs.bat` to launch Emacs:
+Copy the files from `windows/` to your Windows user folder
+(e.g. `C:\Users\A\`):
 
-**`emacs.bat`**
-```bat
-@echo off
+- `windows/emacs.bat`
+- `windows/launch-emacs.ps1`
 
-@rem launch emacs
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& './launch-emacs.ps1'"
-```
+Double-click `emacs.bat` to launch Emacs.
 
-**`launch-emacs.ps1`** — starts VcXsrv if not already running, auto-detects
-the WSL2 gateway IP, sets `DISPLAY`, and launches Emacs via `setsid` so it
-survives the terminal:
-```powershell
-# WSL2 - Launch Emacs
-
-if (-not (Get-Process vcxsrv -ErrorAction SilentlyContinue)) {
-    Write-Host "VcXsrv is not running. Starting XLaunch..." -ForegroundColor Yellow
-    Start-Process "C:\Program Files\VcXsrv\xlaunch.exe" -ArgumentList ":0 -multiwindow -clipboard -wgl -ac"
-} else {
-    Write-Host "VcXsrv is already running." -ForegroundColor Green
-}
-
-# Get the IP to use from wsl and set to a variable.
-$wslip = wsl -d NixOs zsh -c 'ip route | awk ''/default via /'' | cut -d'' '' -f3'
-
-# Run Emacs
-wsl -d NixOs zsh -c "export DISPLAY=$wslip`:0.0 export LIBGL_ALWAYS_INDIRECT=1 && setsid emacs"
-```
-
-> **Note:** The script launches Emacs inside the default WSL shell with
-> `setsid` to detach it from the WSL client process, ensuring the GUI
-> window stays open after the console exits.
-
-## Included Tooling
-
-| Tool | Package |
-|------|---------|
-| Terraform | `terraform` |
-| Azure CLI | `azure-cli` |
-| AWS CLI | `awscli2` |
-| Emacs (GUI) | `emacs` |
-| Emacs launcher | `windows/emacs.bat` / `windows/launch-emacs.ps1` |
+> **Prerequisites:**
+> - [VcXsrv](https://vcxsrv.com/) installed on Windows
+> - `.wslconfig` has `guiApplications=false` (unless using WSLg)
+> - Default WSL distro named `NixOs` (or adjust `-d NixOs` in the script)
 
 ## Prerequisites
 
 - [NixOS-WSL](https://github.com/nix-community/NixOS-WSL) installed
-- A Windows X server (e.g. [VcXsrv](https://vcxsrv.com/)) running on the
-  Windows host — the script auto-detects the Windows host IP from the
-  WSL2 gateway and sets `DISPLAY` accordingly.
-- Windows `.wslconfig` (`%USERPROFILE%\.wslconfig`) should have
-  `guiApplications=false` when using a third-party X server (unless you
-  use WSLg).
-- The default WSL distribution must be named `NixOs` (or adjust the
-  `-d NixOs` flag in `launch-emacs.ps1`).
+- A Windows X server (e.g. [VcXsrv](https://vcxsrv.com/)) on the host
+- `.wslconfig` (`%USERPROFILE%\.wslconfig`) should have
+  `guiApplications=false` when using a third-party X server
+- Default WSL distribution must be named `NixOs`
