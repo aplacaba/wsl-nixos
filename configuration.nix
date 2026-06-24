@@ -36,6 +36,7 @@
     kubectl
     mise
     starship
+    stow
     tmux
     gnumake
     cmake
