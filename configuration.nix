@@ -20,6 +20,7 @@
 
   fonts.packages = with pkgs; [
     nerd-fonts.dejavu-sans-mono
+    nerd-fonts.jetbrains-mono
   ];
 
   environment.systemPackages = with pkgs; [
@@ -34,6 +35,7 @@
     emacs
     gsettings-desktop-schemas
     kubectl
+    kubectx
     mise
     starship
     stow
@@ -44,6 +46,7 @@
     gcc
     glibc
     openssl
+    p7zip
     libffi
     libjpeg8
     nodejs
