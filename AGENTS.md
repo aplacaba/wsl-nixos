@@ -55,10 +55,11 @@ Shell script (wrapped in nix) that:
 1. Discovers the Windows host IP via `ip route`
 2. Launches Emacs via `systemd-run --user` with the correct `DISPLAY`
 
-### `windows/emacs.bat` / `windows/launch-emacs.ps1`
-Windows-side shortcuts. `launch-emacs.ps1` starts VcXsrv if not running,
+### `windows/emacs.bat` / `windows/launch-emacs.ps1` / `windows/alacritty.toml`
+Windows-side files. `launch-emacs.ps1` starts VcXsrv if not running,
 auto-detects the WSL2 gateway IP, and launches Emacs via `setsid` so it
-survives the WSL terminal.
+survives the WSL terminal. `alacritty.toml` is deployed to
+`%APPDATA%\alacritty\alacritty.toml` and launches a WSL shell via `wsl ~`.
 
 ## Tech Stack
 

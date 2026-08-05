@@ -25,6 +25,7 @@
 
   environment.systemPackages = with pkgs; [
     git
+    gh
     wget
     curl
     btop
@@ -36,6 +37,7 @@
     gsettings-desktop-schemas
     kubectl
     kubectx
+    podman
     mise
     starship
     stow
@@ -55,6 +57,7 @@
     terraform
     azure-cli
     awscli2
+    atuin
     (pkgs.writeShellScriptBin "emacs-gui" (builtins.readFile ./bin/emacs-gui))
   ];
 
@@ -70,6 +73,13 @@
 
   programs.zsh.enable = true;
   users.users."xtovarisch".shell = pkgs.zsh;
+
+  # Atuin — shell history with search/sync. This nixpkgs revision has no
+  # `programs.atuin` module, so the package is in systemPackages and the
+  # shell hook is injected via the global interactive zshrc.
+  programs.zsh.interactiveShellInit = ''
+    eval "$(atuin init zsh)"
+  '';
   fonts.fontconfig.enable = true;
 
   programs.ssh.startAgent = true;
