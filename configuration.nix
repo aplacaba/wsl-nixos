@@ -10,6 +10,11 @@
 {
   wsl.enable = true;
 
+  # Match the Windows host timezone (UTC+08:00). The clock is shared
+  # with Windows via WSL; without this, NixOS defaults to UTC and local
+  # time is 8 hours behind.
+  time.timeZone = "Asia/Singapore";
+
   # Nix-ld: provides /lib/ld-linux-x86-64.so.2 and other standard library
   # paths so dynamically linked executables (e.g. opencode, many pre-built
   # binaries) can run on NixOS without manual patchelf.

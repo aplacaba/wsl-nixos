@@ -1,0 +1,53 @@
+# Alacritty configuration — Windows side. Launches WSL (NixOS distro).
+# Colors: Modus Vivendi Tinted palette (from protesilaos/modus-themes source):
+#   background bg-main #0d0e1c, foreground fg-main #ffffff
+#   ANSI 0-7: black/red/green/yellow/blue/magenta/cyan/white
+#   ANSI 8-15: bright variants (black-bright/red-warmer/green-cooler/
+#              yellow-warmer/blue-warmer/magenta-cooler/cyan-cooler/white-bright)
+
+[general]
+
+[window]
+startup_mode = "Maximized"
+
+[terminal]
+shell = "wsl ~"
+
+[font]
+size = 13
+
+[scrolling]
+history = 100000
+multiplier = 3
+
+[colors.primary]
+background = "#0d0e1c"   # bg-main (tinted night-sky blue)
+foreground = "#ffffff"   # fg-main
+
+[colors.cursor]
+text = "#0d0e1c"   # bg-main
+cursor = "#ffffff"
+
+[colors.selection]
+text = "#ffffff"
+background = "#555a66"   # bg-region
+
+[colors.normal]
+black = "#000000"     # bg-term-black
+red = "#ff5f59"       # red
+green = "#44bc44"     # green
+yellow = "#d0bc00"    # yellow
+blue = "#2fafff"      # blue
+magenta = "#feacd0"   # magenta
+cyan = "#00d3d0"      # cyan
+white = "#a6a6a6"     # bg-term-white
+
+[colors.bright]
+black = "#595959"     # bg-term-black-bright
+red = "#ff6b55"       # red-warmer
+green = "#11c777"     # green-cooler
+yellow = "#fec43f"    # yellow-warmer
+blue = "#79a8ff"      # blue-warmer
+magenta = "#b6a0ff"   # magenta-cooler
+cyan = "#6ae4b9"      # cyan-cooler
+white = "#ffffff"     # bg-term-white-bright
