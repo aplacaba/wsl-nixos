@@ -42,7 +42,6 @@
     gsettings-desktop-schemas
     kubectl
     kubectx
-    podman
     mise
     starship
     stow
@@ -88,6 +87,17 @@
   fonts.fontconfig.enable = true;
 
   programs.ssh.startAgent = true;
+
+  # Podman — rootless containers. The module writes /etc/containers
+  # (policy.json, registries) which a bare package install lacks.
+  # dockerCompat provides a `docker` alias and /run/docker.sock-style
+  # compatibility; dns_enabled lets containers on the default network
+  # resolve each other by name (needed for podman-compose).
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    defaultNetwork.settings.dns_enabled = true;
+  };
 
   programs.tmux = {
     enable = true;
