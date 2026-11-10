@@ -26,6 +26,7 @@
   fonts.packages = with pkgs; [
     nerd-fonts.dejavu-sans-mono
     nerd-fonts.jetbrains-mono
+    aporetic
   ];
 
   environment.systemPackages = with pkgs; [
